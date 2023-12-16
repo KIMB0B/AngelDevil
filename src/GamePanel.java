@@ -13,7 +13,7 @@ public class GamePanel extends JPanel {
 	private JLabel text = new JLabel("타이핑해보세요");
 	private ScorePanel scorePanel = null;
 	private EditPanel editPanel = null;
-	private TextSource textSource = new TextSource(); // �ܾ� ���� ����
+	private TextSource textSource = new TextSource();
 	
 	public GamePanel(ScorePanel scorePanel, EditPanel editPanel) {
 		this.scorePanel = scorePanel;
@@ -26,12 +26,9 @@ public class GamePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JTextField t = (JTextField)(e.getSource());
 				String inWord = t.getText();
-				if(text.getText().equals(inWord)) { // ���߱� ����
-					// ���� �ø���
+				if(text.getText().equals(inWord)) {
 					scorePanel.increase();
 					startGame();
-					
-					//input â �����
 					t.setText("");
 				}
 			}
@@ -39,7 +36,6 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void startGame() {
-		// �ܾ� �� �� ����
 		String newWord = textSource.get();
 		text.setText(newWord);
 		text.setBackground(Color.GREEN);
