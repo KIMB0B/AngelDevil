@@ -1,16 +1,20 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class TextSource {
-	private Vector<String> v = new Vector<String>();
+	private Vector<String> v = new Vector<>();
 	
-	public TextSource() {
-		v.add("hello");
-		v.add("Game");
-		v.add("I love you");
-		v.add("Java Good");
-		v.add("Mobile");
-		v.add("Computer");
-		v.add("Raspberry");
+	public TextSource() throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader("./resources/word.txt"));
+
+		String str;
+		while ((str = reader.readLine()) != null) {
+			v.add(str);
+		}
+		reader.close();
 	}
 	
 	public String get() {

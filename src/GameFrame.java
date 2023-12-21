@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,7 +26,7 @@ public class GameFrame extends JFrame {
 	private EditPanel editPanel = new EditPanel();
 	private GamePanel gamePanel = new GamePanel(scorePanel, editPanel);
 	
-	public GameFrame() {
+	public GameFrame() throws IOException {
 		setTitle("타이핑 게임");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);

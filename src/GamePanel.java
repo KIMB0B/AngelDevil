@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,7 +16,7 @@ public class GamePanel extends JPanel {
 	private EditPanel editPanel = null;
 	private TextSource textSource = new TextSource();
 	
-	public GamePanel(ScorePanel scorePanel, EditPanel editPanel) {
+	public GamePanel(ScorePanel scorePanel, EditPanel editPanel) throws IOException {
 		this.scorePanel = scorePanel;
 		this.editPanel = editPanel;
 		
