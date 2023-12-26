@@ -1,13 +1,9 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class GamePanel extends JPanel {
 	private JTextField input = new JTextField(40);
@@ -15,11 +11,11 @@ public class GamePanel extends JPanel {
 	private ScorePanel scorePanel = null;
 	private EditPanel editPanel = null;
 	private TextSource textSource = new TextSource();
-	
+
 	public GamePanel(ScorePanel scorePanel, EditPanel editPanel) throws IOException {
 		this.scorePanel = scorePanel;
 		this.editPanel = editPanel;
-		
+
 		setLayout(new BorderLayout());
 		add(new GameGroundPanel(), BorderLayout.CENTER);
 		add(new InputPanel(), BorderLayout.SOUTH);
@@ -35,23 +31,33 @@ public class GamePanel extends JPanel {
 			}
 		});
 	}
-	
+
 	public void startGame() {
 		String newWord = textSource.get();
 		text.setText(newWord);
 		text.setBackground(Color.GREEN);
 		text.setOpaque(true);
 	}
-	
+
 	class GameGroundPanel extends JPanel {
+		private Image background;
+
 		public GameGroundPanel() {
+			background = new ImageIcon("./resources/background.jpg").getImage();
 			setLayout(null);
 			text.setSize(100, 30);
-			text.setLocation(100,  10);
+			text.setLocation(100, 10);
 			add(text);
 		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+		}
 	}
-	
+
+
 	class InputPanel extends JPanel {
 		public InputPanel() {
 			setLayout(new FlowLayout());
