@@ -60,7 +60,12 @@ public class GameFrame extends JFrame {
 		fileMenu.add(stopItem);
 		fileMenu.addSeparator();
 		fileMenu.add(new JMenuItem("exit"));
+		JMenu stageMenu = new JMenu("Stage");
+		stageMenu.add(new JMenuItem("stage1"));
+		stageMenu.add(new JMenuItem("stage2"));
+		stageMenu.add(new JMenuItem("stage3"));
 		mBar.add(fileMenu);
+		mBar.add(stageMenu);
 		
 		startItem.addActionListener(new StartAction());
 	}

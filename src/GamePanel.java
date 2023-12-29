@@ -37,6 +37,8 @@ public class GamePanel extends JPanel {
 		text.setText(newWord);
 		text.setBackground(Color.GREEN);
 		text.setOpaque(true);
+		int randomX = (int) (Math.random() * (this.getWidth() - text.getWidth()));
+		text.setLocation(randomX, 10);
 	}
 
 	class GameGroundPanel extends JPanel {
