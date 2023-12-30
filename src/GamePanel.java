@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import javax.swing.Timer;
 
 import javax.swing.*;
 
@@ -11,6 +12,7 @@ public class GamePanel extends JPanel {
 	private ScorePanel scorePanel = null;
 	private EditPanel editPanel = null;
 	private TextSource textSource = new TextSource();
+	private Timer timer;
 
 	public GamePanel(ScorePanel scorePanel, EditPanel editPanel) throws IOException {
 		this.scorePanel = scorePanel;
@@ -30,6 +32,13 @@ public class GamePanel extends JPanel {
 				}
 			}
 		});
+		timer = new Timer(300, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				moveWordDown();
+			}
+		});
+		timer.start();
 	}
 
 	public void startGame() {
@@ -39,6 +48,22 @@ public class GamePanel extends JPanel {
 		text.setOpaque(true);
 		int randomX = (int) (Math.random() * (this.getWidth() - text.getWidth()));
 		text.setLocation(randomX, 10);
+	}
+
+	private void moveWordDown() {
+		Point location = text.getLocation();
+		location.y += 10;
+		text.setLocation(location);
+
+		/*if(location.y > this.getHeight() - 30) {
+			startGame();
+		}*/
+		int lineY = this.getHeight() - 50;
+		if(location.y > lineY - text.getHeight()) {
+			timer.stop();
+			JOptionPane.showMessageDialog(this, "Game Over!");
+		}
+
 	}
 
 	class GameGroundPanel extends JPanel {
@@ -56,6 +81,17 @@ public class GamePanel extends JPanel {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+
+			Graphics2D g2d = (Graphics2D) g;
+
+			// 선의 굵기 설정
+			float thickness = 3.0f; // 선의 굵기를 원하는 값으로 조절
+			g2d.setStroke(new BasicStroke(thickness));
+
+			// 선 그리기
+			g2d.setColor(Color.RED);
+			int lineY = GamePanel.this.getHeight() - 50;
+			g2d.drawLine(0, lineY, this.getWidth(), lineY);
 		}
 	}
 
