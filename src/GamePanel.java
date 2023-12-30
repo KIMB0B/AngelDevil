@@ -32,13 +32,6 @@ public class GamePanel extends JPanel {
 				}
 			}
 		});
-		timer = new Timer(300, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				moveWordDown();
-			}
-		});
-		timer.start();
 	}
 
 	public void startGame() {
@@ -48,6 +41,18 @@ public class GamePanel extends JPanel {
 		text.setOpaque(true);
 		int randomX = (int) (Math.random() * (this.getWidth() - text.getWidth()));
 		text.setLocation(randomX, 10);
+
+		// 타이머를 여기에서 시작
+		if (timer != null) {
+			timer.stop(); // 이전 타이머가 있으면 중지
+		}
+		timer = new Timer(300, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				moveWordDown();
+			}
+		});
+		timer.start();
 	}
 
 	private void moveWordDown() {
@@ -55,9 +60,6 @@ public class GamePanel extends JPanel {
 		location.y += 10;
 		text.setLocation(location);
 
-		/*if(location.y > this.getHeight() - 30) {
-			startGame();
-		}*/
 		int lineY = this.getHeight() - 50;
 		if(location.y > lineY - text.getHeight()) {
 			timer.stop();
