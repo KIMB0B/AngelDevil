@@ -7,8 +7,8 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel {
 	private JTextField input = new JTextField(40);
-	private ScorePanel scorePanel = null;
-	private EditPanel editPanel = null;
+	private ScorePanel scorePanel;
+	private EditPanel editPanel;
 	private TextSource textSource = new TextSource();
 	private Timer timer;
 	private ArrayList<JLabel> words = new ArrayList<>();
@@ -34,6 +34,13 @@ public class GamePanel extends JPanel {
 		if (timer != null) {
 			timer.stop();
 		}
+
+		for (JLabel wordLabel : words) {
+			remove(wordLabel);
+		}
+		words.clear();
+		repaint();
+
 		timer = new Timer(2000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -42,6 +49,21 @@ public class GamePanel extends JPanel {
 		});
 		timer.start();
 	}
+
+	public void stopGame() {
+		if (timer != null) {
+			timer.stop();
+		}
+
+		for (JLabel wordLabel : words) {
+			Timer wordTimer = (Timer) wordLabel.getClientProperty("wordTimer");
+			if (wordTimer != null) {
+				wordTimer.stop();
+			}
+		}
+		repaint();
+	}
+
 
 	private void addNewWord() {
 		String newWord = textSource.get();
@@ -75,11 +97,13 @@ public class GamePanel extends JPanel {
 				int lineY = GamePanel.this.getHeight() - 50;
 				if (location.y > lineY - wordLabel.getHeight()) {
 					((Timer) e.getSource()).stop();
+					stopGame();
 					JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
 				}
 			}
 		});
 		wordTimer.start();
+		wordLabel.putClientProperty("wordTimer", wordTimer);
 	}
 
 
@@ -125,6 +149,4 @@ public class GamePanel extends JPanel {
 			add(input);
 		}
 	}
-
-	// ... Other classes like ScorePanel, EditPanel, TextSource ...
 }

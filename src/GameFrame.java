@@ -77,6 +77,7 @@ public class GameFrame extends JFrame {
 		getContentPane().add(tBar, BorderLayout.NORTH);
 		
 		startBtn.addActionListener(new StartAction());
+		stopBtn.addActionListener(new StopAction());
 		
 		startBtn.setRolloverIcon(overIcon);
 		startBtn.setPressedIcon(pressedIcon);
@@ -85,6 +86,12 @@ public class GameFrame extends JFrame {
 	private class StartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			gamePanel.startGame();
+		}
+	}
+
+	private class StopAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			gamePanel.stopGame();
 		}
 	}
 	
