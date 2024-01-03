@@ -20,11 +20,11 @@ public class GamePanel extends JPanel {
 		setLayout(null); // 레이아웃 매니저를 null로 설정
 		//add(new GameGroundPanel());
 		GameGroundPanel gameGroundPanel = new GameGroundPanel();
-		gameGroundPanel.setBounds(0, 0, 550, 380); // GameGroundPanel의 위치와 크기 지정
+		gameGroundPanel.setBounds(0, 0, 550, 430); // GameGroundPanel의 위치와 크기 지정
 		add(gameGroundPanel);
 
 		InputPanel inputPanel = new InputPanel();
-		inputPanel.setBounds(0, 380, 550, 50); // InputPanel의 위치와 크기 지정
+		inputPanel.setBounds(0, 430, 550, 50); // InputPanel의 위치와 크기 지정
 		add(inputPanel);
 		input.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -34,6 +34,25 @@ public class GamePanel extends JPanel {
 				t.setText("");
 			}
 		});
+	}
+
+	int addSpeed = 3500;
+
+	public void setStage(int stage){
+		if(stage == 1){
+			addSpeed = 3500;
+			scorePanel.setStage(1);
+		} else if(stage == 2) {
+			addSpeed = 2000;
+			scorePanel.setStage(2);
+		} else if(stage == 3) {
+			addSpeed = 1000;
+			scorePanel.setStage(3);
+		}
+		if (timer != null) {
+			timer.setDelay(addSpeed);
+			timer.restart();
+		}
 	}
 
 	public void startGame() {
@@ -47,7 +66,7 @@ public class GamePanel extends JPanel {
 		words.clear();
 		repaint();
 
-		timer = new Timer(2000, new ActionListener() {
+		timer = new Timer(addSpeed, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addNewWord();
