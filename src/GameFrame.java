@@ -90,8 +90,17 @@ public class GameFrame extends JFrame {
 	}
 
 	private class StopAction implements ActionListener {
+		private boolean gameStopped = false;
 		public void actionPerformed(ActionEvent e) {
-			gamePanel.stopGame();
+			if(!gameStopped) {
+				gamePanel.stopGame();
+				stopBtn.setText("Restart");
+			}
+			else {
+				gamePanel.restartGame();
+				stopBtn.setText("Stop");
+			}
+			gameStopped = !gameStopped;
 		}
 	}
 	
