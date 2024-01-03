@@ -17,9 +17,15 @@ public class GamePanel extends JPanel {
 		this.scorePanel = scorePanel;
 		this.editPanel = editPanel;
 
-		setLayout(new BorderLayout());
-		add(new GameGroundPanel(), BorderLayout.CENTER);
-		add(new InputPanel(), BorderLayout.SOUTH);
+		setLayout(null); // 레이아웃 매니저를 null로 설정
+		//add(new GameGroundPanel());
+		GameGroundPanel gameGroundPanel = new GameGroundPanel();
+		gameGroundPanel.setBounds(0, 0, 550, 380); // GameGroundPanel의 위치와 크기 지정
+		add(gameGroundPanel);
+
+		InputPanel inputPanel = new InputPanel();
+		inputPanel.setBounds(0, 380, 550, 50); // InputPanel의 위치와 크기 지정
+		add(inputPanel);
 		input.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JTextField t = (JTextField) (e.getSource());
@@ -78,6 +84,9 @@ public class GamePanel extends JPanel {
 		add(wordLabel);
 		setComponentZOrder(wordLabel, 0);
 		moveWordDown(wordLabel);
+
+		revalidate();
+		repaint();
 	}
 
 	private void moveWordDown(JLabel wordLabel) {
