@@ -96,7 +96,7 @@ public class GamePanel extends JPanel {
 		for(JLabel wordLabel : words) {
 			moveWordDown(wordLabel);
 		}
-		timer = new Timer(2000, new ActionListener() {
+		timer = new Timer(addSpeed, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addNewWord();
