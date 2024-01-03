@@ -89,6 +89,22 @@ public class GamePanel extends JPanel {
 		repaint();
 	}
 
+	public void restartGame() {
+		if(timer != null) {
+			timer.stop();
+		}
+		for(JLabel wordLabel : words) {
+			moveWordDown(wordLabel);
+		}
+		timer = new Timer(2000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addNewWord();
+			}
+		});
+		timer.start();
+	}
+
 
 	private void addNewWord() {
 		String newWord = textSource.get();
