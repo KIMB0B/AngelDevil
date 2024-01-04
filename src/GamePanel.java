@@ -17,14 +17,13 @@ public class GamePanel extends JPanel {
 		this.scorePanel = scorePanel;
 		this.editPanel = editPanel;
 
-		setLayout(null); // 레이아웃 매니저를 null로 설정
-		//add(new GameGroundPanel());
+		setLayout(null);
 		GameGroundPanel gameGroundPanel = new GameGroundPanel();
-		gameGroundPanel.setBounds(0, 0, 550, 430); // GameGroundPanel의 위치와 크기 지정
+		gameGroundPanel.setBounds(0, 0, 550, 430);
 		add(gameGroundPanel);
 
 		InputPanel inputPanel = new InputPanel();
-		inputPanel.setBounds(0, 430, 550, 50); // InputPanel의 위치와 크기 지정
+		inputPanel.setBounds(0, 430, 550, 50);
 		add(inputPanel);
 		input.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,7 +127,6 @@ public class GamePanel extends JPanel {
 		Timer wordTimer = new Timer(300, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// JLabel이 GamePanel에서 제거되었는지 확인
 				if (!GamePanel.this.isAncestorOf(wordLabel)) {
 					((Timer) e.getSource()).stop();
 					return;
@@ -140,9 +138,11 @@ public class GamePanel extends JPanel {
 
 				int lineY = GamePanel.this.getHeight() - 50;
 				if (location.y > lineY - wordLabel.getHeight()) {
+					scorePanel.lifeDecrease();
 					((Timer) e.getSource()).stop();
-					stopGame();
-					JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
+//					((Timer) e.getSource()).stop();
+//					stopGame();
+//					JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
 				}
 			}
 		});
