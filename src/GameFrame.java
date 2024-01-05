@@ -3,14 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
+import javax.swing.*;
 
 public class GameFrame extends JFrame {
 	private ImageIcon normalIcon = new ImageIcon("resources/normal.GIF");
@@ -63,7 +56,10 @@ public class GameFrame extends JFrame {
 		fileMenu.add(startItem);
 		fileMenu.add(stopItem);
 		fileMenu.addSeparator();
-		fileMenu.add(new JMenuItem("exit"));
+		JMenu exitSubMenu = new JMenu("exit");
+		fileMenu.add(exitSubMenu);
+		JMenuItem exitItem = new JMenuItem("Exit Game");
+		exitSubMenu.add(exitItem);
 		JMenu stageMenu = new JMenu("Stage");
 		stageMenu.add(stage1Item);
 		stageMenu.add(stage2Item);
@@ -75,6 +71,12 @@ public class GameFrame extends JFrame {
 		stage1Item.addActionListener(new Stage1());
 		stage2Item.addActionListener(new Stage2());
 		stage3Item.addActionListener(new Stage3());
+
+		mBar.add(fileMenu);
+		mBar.add(stageMenu);
+
+		startItem.addActionListener(new StartAction());
+		exitItem.addActionListener(new ExitAction());
 	}
 	
 	private void makeToolBar() {
@@ -120,5 +122,18 @@ public class GameFrame extends JFrame {
 			gameStopped = !gameStopped;
 		}
 	}
-	
+
+	private class ExitAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			confirmExit();
+		}
+	}
+
+	private void confirmExit() {
+		int result = JOptionPane.showConfirmDialog(GameFrame.this, "게임을 정말로 종료하시겠습니까?", "게임 종료", JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+	}
 }

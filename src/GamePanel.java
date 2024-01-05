@@ -109,12 +109,25 @@ public class GamePanel extends JPanel {
 		String newWord = textSource.get();
 		JLabel wordLabel = new JLabel(newWord);
 		wordLabel.setOpaque(true);
-		if (Math.random() < 0.05) {
-			wordLabel.setBackground(Color.PINK);
-			wordLabel.putClientProperty("item", "bonus");
-		} else {
+		if (Math.random() < 0.3) {
+			wordLabel.setBackground(Color.YELLOW);
+			wordLabel.putClientProperty("item", "bonus1");
+		}
+		else if (Math.random() < 0.1) {
 			wordLabel.setBackground(Color.GREEN);
-			wordLabel.putClientProperty("item", "nomal");
+			wordLabel.putClientProperty("item", "bonus2");
+		}
+		else if (Math.random() < 0.1) {
+			wordLabel.setBackground(Color.PINK);
+			wordLabel.putClientProperty("item", "life1");
+		}
+		else if (Math.random() < 0.03) {
+			wordLabel.setBackground(Color.LIGHT_GRAY);
+			wordLabel.putClientProperty("item", "life2");
+		}
+		else {
+			wordLabel.setBackground(Color.WHITE);
+			wordLabel.putClientProperty("item", "normal");
 		}
 		wordLabel.setSize(100, 30);
 
@@ -170,9 +183,13 @@ public class GamePanel extends JPanel {
 			if (wordLabel.getText().equals(inputWord)) {
 				remove(wordLabel);
 				words.remove(i);
-				if (wordLabel.getClientProperty("item") == "bonus") {
+				if (wordLabel.getClientProperty("item") == "bonus1") {
 					scorePanel.scoreIncrease(50);
-				} else if (wordLabel.getClientProperty("item") == "nomal") {
+				}
+				else if (wordLabel.getClientProperty("item") == "bonus2") {
+					scorePanel.scoreIncrease(100);
+				}
+				else if (wordLabel.getClientProperty("item") == "normal") {
 					scorePanel.scoreIncrease(10);
 				}
 				repaint();

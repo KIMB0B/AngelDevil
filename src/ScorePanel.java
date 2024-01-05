@@ -24,7 +24,7 @@ public class ScorePanel extends JPanel {
 
 		textLabel.setSize(50, 20);
 		textLabel.setLocation(10, 10);
-		textLabel.setBackground(Color.YELLOW);
+		//textLabel.setBackground(Color.YELLOW);
 		add(textLabel);
 
 		scoreLabel.setSize(100, 20);
@@ -66,7 +66,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	public boolean checkGameOver() {
-		if(life == 0) {
+		if(life == 1) {
 			return true;
 		} else {
 			return false;
