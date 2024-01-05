@@ -109,7 +109,13 @@ public class GamePanel extends JPanel {
 		String newWord = textSource.get();
 		JLabel wordLabel = new JLabel(newWord);
 		wordLabel.setOpaque(true);
-		wordLabel.setBackground(Color.GREEN);
+		if (Math.random() < 0.05) {
+			wordLabel.setBackground(Color.PINK);
+			wordLabel.putClientProperty("item", "bonus");
+		} else {
+			wordLabel.setBackground(Color.GREEN);
+			wordLabel.putClientProperty("item", "nomal");
+		}
 		wordLabel.setSize(100, 30);
 
 		int randomX = (int) (Math.random() * (this.getWidth() - wordLabel.getWidth()));
@@ -157,7 +163,11 @@ public class GamePanel extends JPanel {
 			if (wordLabel.getText().equals(inputWord)) {
 				remove(wordLabel);
 				words.remove(i);
-				scorePanel.increase();
+				if (wordLabel.getClientProperty("item") == "bonus") {
+					scorePanel.specialIncrease();
+				} else if (wordLabel.getClientProperty("item") == "nomal") {
+					scorePanel.increase();
+				}
 				repaint();
 				break;
 			}

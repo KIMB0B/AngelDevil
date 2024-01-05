@@ -24,6 +24,7 @@ public class ScorePanel extends JPanel {
 
 		textLabel.setSize(50, 20);
 		textLabel.setLocation(10, 10);
+		textLabel.setBackground(Color.YELLOW);
 		add(textLabel);
 
 		scoreLabel.setSize(100, 20);
@@ -63,6 +64,11 @@ public class ScorePanel extends JPanel {
 		}
 		lifeLabel.setText(Integer.toString(life));
 	}
+	public void specialIncrease() {
+		score += 50;
+		scoreLabel.setText(Integer.toString(score));
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
