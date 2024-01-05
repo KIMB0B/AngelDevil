@@ -25,7 +25,7 @@ public class GameFrame extends JFrame {
 	private boolean gameStopped = false;
 	
 	public GameFrame() throws IOException {
-		setTitle("타이핑 게임");
+		setTitle("Angel Devil 타자연습게임");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
 		splitPane();
