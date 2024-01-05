@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
 			addSpeed = 1000;
 			scorePanel.setStage(3);
 		}
-		if (timer != null) {
+		if (timer != null && timer.isRunning()) {
 			timer.setDelay(addSpeed);
 			timer.restart();
 		}
