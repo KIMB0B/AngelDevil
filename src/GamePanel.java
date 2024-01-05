@@ -2,70 +2,176 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import javax.swing.Timer;
-
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class GamePanel extends JPanel {
 	private JTextField input = new JTextField(40);
-	private JLabel text = new JLabel("타이핑해보세요");
-	private ScorePanel scorePanel = null;
-	private EditPanel editPanel = null;
+	private ScorePanel scorePanel;
+	private EditPanel editPanel;
 	private TextSource textSource = new TextSource();
 	private Timer timer;
+	private ArrayList<JLabel> words = new ArrayList<>();
 
 	public GamePanel(ScorePanel scorePanel, EditPanel editPanel) throws IOException {
 		this.scorePanel = scorePanel;
 		this.editPanel = editPanel;
 
-		setLayout(new BorderLayout());
-		add(new GameGroundPanel(), BorderLayout.CENTER);
-		add(new InputPanel(), BorderLayout.SOUTH);
+		setLayout(null);
+		GameGroundPanel gameGroundPanel = new GameGroundPanel();
+		gameGroundPanel.setBounds(0, 0, 550, 430);
+		add(gameGroundPanel);
+
+		InputPanel inputPanel = new InputPanel();
+		inputPanel.setBounds(0, 430, 550, 50);
+		add(inputPanel);
 		input.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JTextField t = (JTextField)(e.getSource());
+				JTextField t = (JTextField) (e.getSource());
 				String inWord = t.getText();
-				if(text.getText().equals(inWord)) {
-					scorePanel.increase();
-					startGame();
-					t.setText("");
-				}
+				checkAndRemoveWord(inWord);
+				t.setText("");
 			}
 		});
 	}
 
-	public void startGame() {
-		String newWord = textSource.get();
-		text.setText(newWord);
-		text.setBackground(Color.GREEN);
-		text.setOpaque(true);
-		int randomX = (int) (Math.random() * (this.getWidth() - text.getWidth()));
-		text.setLocation(randomX, 10);
+	int addSpeed = 3500;
 
-		// 타이머를 여기에서 시작
-		if (timer != null) {
-			timer.stop(); // 이전 타이머가 있으면 중지
+	public void setStage(int stage){
+		if(stage == 1){
+			addSpeed = 3500;
+			scorePanel.setStage(1);
+		} else if(stage == 2) {
+			addSpeed = 2000;
+			scorePanel.setStage(2);
+		} else if(stage == 3) {
+			addSpeed = 1000;
+			scorePanel.setStage(3);
 		}
-		timer = new Timer(300, new ActionListener() {
+		if (timer != null && timer.isRunning()) {
+			timer.setDelay(addSpeed);
+			timer.restart();
+		}
+	}
+
+	public void startGame() {
+		if (timer != null) {
+			timer.stop();
+		}
+
+		for (JLabel wordLabel : words) {
+			remove(wordLabel);
+		}
+		words.clear();
+		repaint();
+
+		timer = new Timer(addSpeed, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				moveWordDown();
+				addNewWord();
 			}
 		});
 		timer.start();
 	}
 
-	private void moveWordDown() {
-		Point location = text.getLocation();
-		location.y += 10;
-		text.setLocation(location);
-
-		int lineY = this.getHeight() - 50;
-		if(location.y > lineY - text.getHeight()) {
+	public void stopGame() {
+		if (timer != null) {
 			timer.stop();
-			JOptionPane.showMessageDialog(this, "Game Over!");
 		}
 
+		for (JLabel wordLabel : words) {
+			Timer wordTimer = (Timer) wordLabel.getClientProperty("wordTimer");
+			if (wordTimer != null) {
+				wordTimer.stop();
+			}
+		}
+		repaint();
+	}
+
+	public void restartGame() {
+		if(timer != null) {
+			timer.stop();
+		}
+		for(JLabel wordLabel : words) {
+			moveWordDown(wordLabel);
+		}
+		timer = new Timer(addSpeed, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addNewWord();
+			}
+		});
+		timer.start();
+	}
+
+
+	private void addNewWord() {
+		String newWord = textSource.get();
+		JLabel wordLabel = new JLabel(newWord);
+		wordLabel.setOpaque(true);
+		if (Math.random() < 0.05) {
+			wordLabel.setBackground(Color.PINK);
+			wordLabel.putClientProperty("item", "bonus");
+		} else {
+			wordLabel.setBackground(Color.GREEN);
+			wordLabel.putClientProperty("item", "nomal");
+		}
+		wordLabel.setSize(100, 30);
+
+		int randomX = (int) (Math.random() * (this.getWidth() - wordLabel.getWidth()));
+		wordLabel.setLocation(randomX, 10);
+		words.add(wordLabel);
+		add(wordLabel);
+		setComponentZOrder(wordLabel, 0);
+		moveWordDown(wordLabel);
+
+		revalidate();
+		repaint();
+	}
+
+	private void moveWordDown(JLabel wordLabel) {
+		Timer wordTimer = new Timer(300, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!GamePanel.this.isAncestorOf(wordLabel)) {
+					((Timer) e.getSource()).stop();
+					return;
+				}
+
+				Point location = wordLabel.getLocation();
+				location.y += 10;
+				wordLabel.setLocation(location);
+
+				int lineY = GamePanel.this.getHeight() - 50;
+				if (location.y > lineY - wordLabel.getHeight()) {
+					scorePanel.lifeDecrease();
+					((Timer) e.getSource()).stop();
+//					((Timer) e.getSource()).stop();
+//					stopGame();
+//					JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
+				}
+			}
+		});
+		wordTimer.start();
+		wordLabel.putClientProperty("wordTimer", wordTimer);
+	}
+
+
+	private void checkAndRemoveWord(String inputWord) {
+		for (int i = 0; i < words.size(); i++) {
+			JLabel wordLabel = words.get(i);
+			if (wordLabel.getText().equals(inputWord)) {
+				remove(wordLabel);
+				words.remove(i);
+				if (wordLabel.getClientProperty("item") == "bonus") {
+					scorePanel.specialIncrease();
+				} else if (wordLabel.getClientProperty("item") == "nomal") {
+					scorePanel.increase();
+				}
+				repaint();
+				break;
+			}
+		}
 	}
 
 	class GameGroundPanel extends JPanel {
@@ -74,9 +180,6 @@ public class GamePanel extends JPanel {
 		public GameGroundPanel() {
 			background = new ImageIcon("./resources/background.jpg").getImage();
 			setLayout(null);
-			text.setSize(100, 30);
-			text.setLocation(100, 10);
-			add(text);
 		}
 
 		@Override
@@ -85,18 +188,13 @@ public class GamePanel extends JPanel {
 			g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
 
 			Graphics2D g2d = (Graphics2D) g;
-
-			// 선의 굵기 설정
-			float thickness = 3.0f; // 선의 굵기를 원하는 값으로 조절
+			float thickness = 3.0f;
 			g2d.setStroke(new BasicStroke(thickness));
-
-			// 선 그리기
 			g2d.setColor(Color.RED);
 			int lineY = GamePanel.this.getHeight() - 50;
 			g2d.drawLine(0, lineY, this.getWidth(), lineY);
 		}
 	}
-
 
 	class InputPanel extends JPanel {
 		public InputPanel() {
@@ -105,5 +203,4 @@ public class GamePanel extends JPanel {
 			add(input);
 		}
 	}
-
 }

@@ -19,6 +19,10 @@ public class GameFrame extends JFrame {
 	
 	private JMenuItem startItem = new JMenuItem("start");
 	private JMenuItem stopItem = new JMenuItem("stop");
+	private JMenuItem stage1Item = new JMenuItem("stage1");
+	private JMenuItem stage2Item = new JMenuItem("stage2");
+	private JMenuItem stage3Item = new JMenuItem("stage3");
+
 	private JButton startBtn = new JButton(normalIcon);
 	private JButton stopBtn = new JButton("stop");
 	
@@ -61,13 +65,16 @@ public class GameFrame extends JFrame {
 		fileMenu.addSeparator();
 		fileMenu.add(new JMenuItem("exit"));
 		JMenu stageMenu = new JMenu("Stage");
-		stageMenu.add(new JMenuItem("stage1"));
-		stageMenu.add(new JMenuItem("stage2"));
-		stageMenu.add(new JMenuItem("stage3"));
+		stageMenu.add(stage1Item);
+		stageMenu.add(stage2Item);
+		stageMenu.add(stage3Item);
 		mBar.add(fileMenu);
 		mBar.add(stageMenu);
 		
 		startItem.addActionListener(new StartAction());
+		stage1Item.addActionListener(new Stage1());
+		stage2Item.addActionListener(new Stage2());
+		stage3Item.addActionListener(new Stage3());
 	}
 	
 	private void makeToolBar() {
@@ -77,6 +84,7 @@ public class GameFrame extends JFrame {
 		getContentPane().add(tBar, BorderLayout.NORTH);
 		
 		startBtn.addActionListener(new StartAction());
+		stopBtn.addActionListener(new StopAction());
 		
 		startBtn.setRolloverIcon(overIcon);
 		startBtn.setPressedIcon(pressedIcon);
@@ -85,6 +93,31 @@ public class GameFrame extends JFrame {
 	private class StartAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			gamePanel.startGame();
+		}
+	}
+
+	private class Stage1 implements ActionListener {
+		public void actionPerformed(ActionEvent e) {gamePanel.setStage(1);}
+	}
+	private class Stage2 implements ActionListener {
+		public void actionPerformed(ActionEvent e) {gamePanel.setStage(2);}
+	}
+	private class Stage3 implements ActionListener {
+		public void actionPerformed(ActionEvent e) {gamePanel.setStage(3);}
+	}
+
+	private class StopAction implements ActionListener {
+		private boolean gameStopped = false;
+		public void actionPerformed(ActionEvent e) {
+			if(!gameStopped) {
+				gamePanel.stopGame();
+				stopBtn.setText("Restart");
+			}
+			else {
+				gamePanel.restartGame();
+				stopBtn.setText("Stop");
+			}
+			gameStopped = !gameStopped;
 		}
 	}
 	
