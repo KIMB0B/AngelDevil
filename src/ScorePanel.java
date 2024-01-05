@@ -53,8 +53,8 @@ public class ScorePanel extends JPanel {
 		stageLabel.setText(Integer.toString(stage));
 	}
 
-	public void increase() {
-		score += 10;
+	public void scoreIncrease(int i) {
+		score += i;
 		scoreLabel.setText(Integer.toString(score));
 	}
 
@@ -64,9 +64,13 @@ public class ScorePanel extends JPanel {
 		}
 		lifeLabel.setText(Integer.toString(life));
 	}
-	public void specialIncrease() {
-		score += 50;
-		scoreLabel.setText(Integer.toString(score));
+
+	public boolean checkGameOver() {
+		if(life == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

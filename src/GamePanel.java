@@ -144,11 +144,18 @@ public class GamePanel extends JPanel {
 
 				int lineY = GamePanel.this.getHeight() - 50;
 				if (location.y > lineY - wordLabel.getHeight()) {
+					if (scorePanel.checkGameOver()){
+						((Timer) e.getSource()).stop();
+						stopGame();
+						JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
+						return;
+					}
 					scorePanel.lifeDecrease();
+					remove(wordLabel);
+					words.remove(wordLabel);
+					repaint();
 					((Timer) e.getSource()).stop();
-//					((Timer) e.getSource()).stop();
-//					stopGame();
-//					JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
+
 				}
 			}
 		});
@@ -164,9 +171,9 @@ public class GamePanel extends JPanel {
 				remove(wordLabel);
 				words.remove(i);
 				if (wordLabel.getClientProperty("item") == "bonus") {
-					scorePanel.specialIncrease();
+					scorePanel.scoreIncrease(50);
 				} else if (wordLabel.getClientProperty("item") == "nomal") {
-					scorePanel.increase();
+					scorePanel.scoreIncrease(10);
 				}
 				repaint();
 				break;
