@@ -24,7 +24,7 @@ public class ScorePanel extends JPanel {
 
 		textLabel.setSize(50, 20);
 		textLabel.setLocation(10, 10);
-		textLabel.setBackground(Color.YELLOW);
+		//textLabel.setBackground(Color.YELLOW);
 		add(textLabel);
 
 		scoreLabel.setSize(100, 20);
@@ -53,9 +53,21 @@ public class ScorePanel extends JPanel {
 		stageLabel.setText(Integer.toString(stage));
 	}
 
-	public void increase() {
-		score += 10;
+	public void scoreIncrease(int i) {
+		score += i;
 		scoreLabel.setText(Integer.toString(score));
+	}
+
+	public void lifeInit() {
+		life = 3;
+		lifeLabel.setText(Integer.toString(life));
+	}
+
+	public void lifeIncrease() {
+		if(life < 5) {
+			life += 1;
+		}
+		lifeLabel.setText(Integer.toString(life));
 	}
 
 	public void lifeDecrease() {
@@ -64,9 +76,13 @@ public class ScorePanel extends JPanel {
 		}
 		lifeLabel.setText(Integer.toString(life));
 	}
-	public void specialIncrease() {
-		score += 50;
-		scoreLabel.setText(Integer.toString(score));
+
+	public boolean checkGameOver() {
+		if(life == 1) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
