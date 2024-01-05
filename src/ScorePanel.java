@@ -78,7 +78,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	public boolean checkGameOver() {
-		if(life == 1) {
+		if(life == 0) {
 			return true;
 		} else {
 			return false;

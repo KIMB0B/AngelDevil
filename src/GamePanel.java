@@ -110,7 +110,7 @@ public class GamePanel extends JPanel {
 		String newWord = textSource.get();
 		JLabel wordLabel = new JLabel(newWord);
 		wordLabel.setOpaque(true);
-		if (Math.random() < 0.3) {
+		if (Math.random() < 0.2) {
 			wordLabel.setBackground(Color.YELLOW);
 			wordLabel.putClientProperty("item", "bonus1");
 		}
@@ -162,7 +162,6 @@ public class GamePanel extends JPanel {
 						scorePanel.lifeDecrease();
 					}
 					if (scorePanel.checkGameOver()){
-						((Timer) e.getSource()).stop();
 						stopGame();
 						JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
 					}
@@ -170,7 +169,6 @@ public class GamePanel extends JPanel {
 					words.remove(wordLabel);
 					repaint();
 					((Timer) e.getSource()).stop();
-
 				}
 			}
 		});
