@@ -63,6 +63,7 @@ public class GamePanel extends JPanel {
 			remove(wordLabel);
 		}
 		words.clear();
+		scorePanel.lifeInit();
 		repaint();
 
 		timer = new Timer(addSpeed, new ActionListener() {
@@ -157,13 +158,14 @@ public class GamePanel extends JPanel {
 
 				int lineY = GamePanel.this.getHeight() - 50;
 				if (location.y > lineY - wordLabel.getHeight()) {
+					if (wordLabel.getClientProperty("item") != "life2") {
+						scorePanel.lifeDecrease();
+					}
 					if (scorePanel.checkGameOver()){
 						((Timer) e.getSource()).stop();
 						stopGame();
 						JOptionPane.showMessageDialog(GamePanel.this, "Game Over!");
-						return;
 					}
-					scorePanel.lifeDecrease();
 					remove(wordLabel);
 					words.remove(wordLabel);
 					repaint();
@@ -191,6 +193,14 @@ public class GamePanel extends JPanel {
 				}
 				else if (wordLabel.getClientProperty("item") == "normal") {
 					scorePanel.scoreIncrease(10);
+				}
+				else if (wordLabel.getClientProperty("item") == "life1") {
+					scorePanel.scoreIncrease(10);
+					scorePanel.lifeIncrease();
+				}
+				else if (wordLabel.getClientProperty("item") == "life2") {
+					scorePanel.scoreIncrease(10);
+					scorePanel.lifeDecrease();
 				}
 				repaint();
 				break;

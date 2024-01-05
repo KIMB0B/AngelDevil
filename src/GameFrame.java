@@ -22,6 +22,7 @@ public class GameFrame extends JFrame {
 	private ScorePanel scorePanel = new ScorePanel();
 	private EditPanel editPanel = new EditPanel();
 	private GamePanel gamePanel = new GamePanel(scorePanel, editPanel);
+	private boolean gameStopped = false;
 	
 	public GameFrame() throws IOException {
 		setTitle("타이핑 게임");
@@ -76,6 +77,7 @@ public class GameFrame extends JFrame {
 		mBar.add(stageMenu);
 
 		startItem.addActionListener(new StartAction());
+		stopItem.addActionListener(new StopAction());
 		exitItem.addActionListener(new ExitAction());
 	}
 	
@@ -109,15 +111,16 @@ public class GameFrame extends JFrame {
 	}
 
 	private class StopAction implements ActionListener {
-		private boolean gameStopped = false;
 		public void actionPerformed(ActionEvent e) {
 			if(!gameStopped) {
 				gamePanel.stopGame();
-				stopBtn.setText("Restart");
+				stopBtn.setText("restart");
+				stopItem.setText("restart");
 			}
 			else {
 				gamePanel.restartGame();
-				stopBtn.setText("Stop");
+				stopBtn.setText("stop");
+				stopItem.setText("stop");
 			}
 			gameStopped = !gameStopped;
 		}

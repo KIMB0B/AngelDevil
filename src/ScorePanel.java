@@ -58,6 +58,18 @@ public class ScorePanel extends JPanel {
 		scoreLabel.setText(Integer.toString(score));
 	}
 
+	public void lifeInit() {
+		life = 3;
+		lifeLabel.setText(Integer.toString(life));
+	}
+
+	public void lifeIncrease() {
+		if(life < 5) {
+			life += 1;
+		}
+		lifeLabel.setText(Integer.toString(life));
+	}
+
 	public void lifeDecrease() {
 		if(life > 0) {
 			life -= 1;
